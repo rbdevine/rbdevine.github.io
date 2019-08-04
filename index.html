@@ -1,0 +1,46 @@
+<html>
+<meta charset="utf-8">
+<head>
+  <link rel="stylesheet" href="slideshow.css">
+  <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="graphs.js"></script>
+  <!--script src="d3.min.js"></script-->
+  <!--script src="d3-annotation.js"></script-->
+  <!--script src="d3-annotation.min.js"></script-->
+</head>
+<style type="text/css">
+</style>
+<!--body onload='init()'-->
+<body>
+    <!-- Tab links -->
+    <div class="tab">
+      <button id="Scene1" class="tablinks">1</button>
+      <button id="Scene2" class="tablinks">2</button>
+      <button id="Scene3" class="tablinks">3</button>
+      <!--button class="tablinks" onclick="openCity(event, 'London')">London</button>
+      <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
+      <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button-->
+    </div>
+    <!-- Tab content -->
+<div id="Scene1Content" class="tabcontent">
+  <h3>C02 On the Rise</h3>
+  <p>C02 output into the atmosphere due to human activity has been on the rise in the past 4 decades.</p>
+  <svg id="Scene1SVG" width=500 height=400></svg>
+</div>
+
+<div id="Scene2Content" class="tabcontent">
+  <h3>Earth's Land and Sea Temperature</h3>
+  <p>The surface temperature of the earth on both land and water, relatively stable for thousands of years, began a sharp incline with the industrial revolution.</p>
+  <svg id="Scene2SVG" width=500 height=400></svg>
+</div>
+
+<div id="Scene3Content" class="tabcontent">
+  <h3>Glacier Surface Area Reduction</h3>
+  <p>The earth glaciers located at the earth's two poles have been dramatically losing surface area in the past few decades. The trend is expected to accelerate in the decades to come. </p>
+  <svg id="Scene3SVG" width=500 height=400></svg>
+</div>
+    <svg id="General" width=500 height=400>
+    </svg>
+  </body>
+</html>
