@@ -14,10 +14,12 @@ document.addEventListener("DOMContentLoaded",function(e) {
 async function makeTempGraph() {
    console.log("makeTempGraph()")
    const data = await d3.csv('epa-earth-temp.csv')
-   var minYear = d3.min(data, function(d) { return d.Year; });
-   var maxYear = d3.max(data, function(d) { return d.Year; });
-   var minC02 = d3.min(data, function(d) { return +d["Earth's surface (land and ocean)"]; });
-   var maxC02 = d3.max(data, function(d) { return +d["Earth's surface (land and ocean)"]; });
+   const yfield = "Earth's surface (land and ocean)"
+   var minYear = d3.min(data, function(d) { return +d.Year; });
+   var maxYear = d3.max(data, function(d) { return +d.Year; }) + 8;
+   var minC02 = d3.min(data, function(d) { return +d[yfield]; });
+   var maxC02 = d3.max(data, function(d) { return +d[yfield]; });
+   console.log("MAX YEAR: " + maxYear)
    console.log(minC02)
    console.log(maxC02)
    var margin = {top: 50, right: 50, bottom: 50, left: 100}
@@ -43,7 +45,7 @@ async function makeTempGraph() {
       .attr("x", -(margin.top + height/2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Earth's surface (land and ocean)");
+      .text(yfield + " (ºC)");
 
    // text label for the x axis
    svg.append("text")             
@@ -55,7 +57,7 @@ async function makeTempGraph() {
    
    line = d3.line()
       .x(function(d,i) { return x(d.Year); })
-      .y(function(d) { return y(d["Earth's surface (land and ocean)"]);})
+      .y(function(d) { return y(d[yfield]);})
       .curve(d3.curveMonotoneX);
 
    /* draw line */
@@ -64,14 +66,39 @@ async function makeTempGraph() {
       .attr("class", "line")
       .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
       .attr("d", line);
+
+   var div = d3.select("body").append("div")	
+       .attr("class", "tooltip")				
+       .style("opacity", 0);
+
+   svg.append("g")
+      .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
+      .selectAll().data(data).enter().append("circle")
+      .attr("cx",function(d){return x(d.Year);})
+      .attr("cy",function(d){return y(d[yfield]);})
+      .attr("r",3)
+      .on("mouseover", function(d) {		
+	 div.transition()		
+	    .duration(200)		
+            .style("opacity", .9);
+	 div.html(d[yfield] + " &#8451;</br>" + d.Year)	
+            .style("left", (d3.event.pageX) + "px")		
+            .style("top", (d3.event.pageY - 28) + "px");	
+      })			
+      .on("mouseout", function(d) {		
+         div.transition()		
+            .duration(500)		
+            .style("opacity", 0);	
+      });
 }
 
 async function makeGlacierGraph() {
+   const yfield = "Mean cumulative mass balance"
    const data = await d3.csv('epa-glacier-mass.csv')
-   const minYear = d3.min(data, function(d) { return d.Year; });
-   const maxYear = d3.max(data, function(d) { return d.Year; });
-   const minMass = d3.min(data, function(d) { return +d["Mean cumulative mass balance"]; });
-   const maxMass = d3.max(data, function(d) { return +d["Mean cumulative mass balance"]; });
+   const minYear = d3.min(data, function(d) { return +d.Year; });
+   const maxYear = d3.max(data, function(d) { return +d.Year; }) + 2;
+   const minMass = d3.min(data, function(d) { return +d[yfield]; });
+   const maxMass = d3.max(data, function(d) { return +d[yfield]; });
    const margin = {top: 50, right: 50, bottom: 50, left: 100}
    //, width = window.innerWidth - margin.left - margin.right // Use the window's width
    //, height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
@@ -97,7 +124,7 @@ async function makeGlacierGraph() {
       .attr("x", -(margin.top + height/2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Mean cumulative mass balance");
+      .text("Mean cumulative mass balance (meters)");
 
    // text label for the x axis
    svg.append("text")             
@@ -107,18 +134,10 @@ async function makeGlacierGraph() {
       .style("text-anchor", "middle")
       .text("Year");
 
-   /*
-   svg.append("g")
-      .attr("transform","translate("+margin+","+margin+")")
-      .selectAll().data(data).enter().append("circle")
-      .attr("cx",function(d){return x(d.Year);})
-      .attr("cy",function(d){return y(d["CO2 (kt)"]);})
-      .attr("r",1)}
-*/
 
    line = d3.line()
       .x(function(d,i) { return x(d.Year); })
-      .y(function(d) { return y(d["Mean cumulative mass balance"]);})
+      .y(function(d) { return y(d[yfield]);})
       .curve(d3.curveMonotoneX);
 
    /* draw line */
@@ -127,19 +146,44 @@ async function makeGlacierGraph() {
       .attr("class", "line")
       .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
       .attr("d", line);
+
+   var div = d3.select("body").append("div")	
+       .attr("class", "tooltip")				
+       .style("opacity", 0);
+
+   svg.append("g")
+      .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
+      .selectAll().data(data).enter().append("circle")
+      .attr("cx",function(d){return x(d.Year);})
+      .attr("cy",function(d){return y(d[yfield]);})
+      .attr("r",3)
+      .on("mouseover", function(d) {		
+	 div.transition()		
+	    .duration(200)		
+            .style("opacity", .9);
+	 div.html(d[yfield] + "</br>" + d.Year)	
+            .style("left", (d3.event.pageX) + "px")		
+            .style("top", (d3.event.pageY - 28) + "px");	
+      })			
+      .on("mouseout", function(d) {		
+         div.transition()		
+            .duration(500)		
+            .style("opacity", 0);	
+      });
 }
 
 async function makeSeaLevelGraph() {
    const data = await d3.csv('epa-sea-level.csv')
-   const minYear = d3.min(data, function(d) { return d.Year; });
-   const maxYear = d3.max(data, function(d) { return d.Year; });
-   const minMass = d3.min(data, function(d) { return +d["CSIRO - Adjusted sea level (inches)"]; });
-   const maxMass = d3.max(data, function(d) { return +d["CSIRO - Adjusted sea level (inches)"]; });
+   const yfield = "CSIRO - Adjusted sea level (inches)";
+   const minYear = d3.min(data, function(d) { return +d.Year; });
+   const maxYear = d3.max(data, function(d) { return +d.Year; }) + 3;
+   const minMass = d3.min(data, function(d) { return +d[yfield]; });
+   const maxMass = d3.max(data, function(d) { return +d[yfield]; });
    const margin = {top: 50, right: 50, bottom: 50, left: 100}
    //, width = window.innerWidth - margin.left - margin.right // Use the window's width
    //, height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
    var svg = d3.select("#Graph")
-   svg.attr("class","glacierSVG")
+   svg.attr("class","sealevelSVG")
    const width = parseInt(svg.style("width")) - margin.top - margin.bottom
    const height = parseInt(svg.style("height")) - margin.left - margin.right
    var x = d3.scaleLinear().domain([minYear,maxYear]).range([0,width])
@@ -160,7 +204,7 @@ async function makeSeaLevelGraph() {
       .attr("x", -(margin.top + height/2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("CSIRO - Adjusted sea level (inches)");
+      .text(yfield);
 
    // text label for the x axis
    svg.append("text")             
@@ -170,18 +214,9 @@ async function makeSeaLevelGraph() {
       .style("text-anchor", "middle")
       .text("Year");
 
-   /*
-   svg.append("g")
-      .attr("transform","translate("+margin+","+margin+")")
-      .selectAll().data(data).enter().append("circle")
-      .attr("cx",function(d){return x(d.Year);})
-      .attr("cy",function(d){return y(d["CO2 (kt)"]);})
-      .attr("r",1)}
-*/
-
    line = d3.line()
       .x(function(d,i) { return x(d.Year); })
-      .y(function(d) { return y(d["CSIRO - Adjusted sea level (inches)"]);})
+      .y(function(d) { return y(d[yfield]);})
       .curve(d3.curveMonotoneX);
 
    /* draw line */
@@ -190,6 +225,32 @@ async function makeSeaLevelGraph() {
       .attr("class", "line")
       .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
       .attr("d", line);
+
+   var div = d3.select("body").append("div")	
+       .attr("class", "tooltip")				
+       .style("opacity", 0);
+
+   var format2dec = d3.format(".2f")
+   
+   svg.append("g")
+      .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
+      .selectAll().data(data).enter().append("circle")
+      .attr("cx",function(d){return x(d.Year);})
+      .attr("cy",function(d){return y(d[yfield]);})
+      .attr("r",2)
+      .on("mouseover", function(d) {		
+	 div.transition()		
+	    .duration(200)		
+            .style("opacity", .9);
+	 div.html(format2dec(d[yfield]) + " inches</br>" + d.Year)	
+            .style("left", (d3.event.pageX) + "px")		
+            .style("top", (d3.event.pageY - 28) + "px");	
+      })			
+      .on("mouseout", function(d) {		
+         div.transition()		
+            .duration(500)		
+            .style("opacity", 0);	
+      });
 }
 
 function loadFirstScene(e) {
@@ -242,10 +303,11 @@ function openScene(e) {
 
 async function makeC02Graph(annotate) {
    const data = await d3.csv('energy-use-C02-world.csv')
-   const minYear = d3.min(data, function(d) { return d.Year; });
-   const maxYear = d3.max(data, function(d) { return d.Year; });
-   const minC02 = d3.min(data, function(d) { return d["CO2 (kt)"]; });
-   const maxC02 = d3.max(data, function(d) { return d["CO2 (kt)"]; });
+   const yfield = "CO2 (kt)"
+   const minYear = d3.min(data, function(d) { return +d.Year; });
+   const maxYear = d3.max(data, function(d) { return +d.Year; })+2;
+   const minC02 = d3.min(data, function(d) { return +d[yfield]; });
+   const maxC02 = d3.max(data, function(d) { return +d[yfield]; });
    const margin = {top: 50, right: 50, bottom: 50, left: 100}
    //, width = window.innerWidth - margin.left - margin.right // Use the window's width
    //, height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
@@ -264,7 +326,6 @@ async function makeC02Graph(annotate) {
       .attr("transform","translate("+(margin.left)+","+((margin.top)+height)+")")
       .call(d3.axisBottom(x).tickFormat(d3.format("d")))
    
-
    // text label for the y axis
    svg.append("text")
       .attr("transform", "rotate(-90)")
@@ -272,7 +333,7 @@ async function makeC02Graph(annotate) {
       .attr("x", -(margin.top + height/2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Total CO2 Emissions (Gton)");
+      .text("Total CO2 Emissions (Gigaton)");
 
    // text label for the x axis
    svg.append("text")             
@@ -290,13 +351,13 @@ async function makeC02Graph(annotate) {
       .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
       .selectAll().data(data).enter().append("circle")
       .attr("cx",function(d){return x(d.Year);})
-      .attr("cy",function(d){return y(d["CO2 (kt)"]);})
+      .attr("cy",function(d){return y(d[yfield]);})
       .attr("r",3)
       .on("mouseover", function(d) {		
 	 div.transition()		
 	    .duration(200)		
             .style("opacity", .9);
-	 div.html(parseInt(y(d["CO2 (kt)"])) + "</br>" + d.Year)	
+	 div.html(parseInt(d[yfield]/1000000) + " Gigaton </br>" + d.Year)	
             .style("left", (d3.event.pageX) + "px")		
             .style("top", (d3.event.pageY - 28) + "px");	
       })					
@@ -353,7 +414,7 @@ async function makeC02Graph(annotate) {
 	    },
 	    type: d3.annotationCalloutCircle,
 	    subject: { radius: 15 },
-	    data: { y: 17000000 },
+	    data: { x: 1975.3, y: 17000000 },
 	    dy: -100
 	 }
       ]
@@ -361,7 +422,7 @@ async function makeC02Graph(annotate) {
       // Add annotation to the chart
       const makeAnnotations = d3.annotation()
 	    .accessors({
-	       x: function(d){ return x(1975.5) + margin.left },
+	       x: function(d){ return x(d.x) + margin.left },
 	       y: function(d){ return y(d.y) + margin.top }
 	    })
 	    .annotations(annotations)
