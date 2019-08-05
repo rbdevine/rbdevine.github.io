@@ -90,6 +90,33 @@ async function makeTempGraph() {
             .duration(500)		
             .style("opacity", 0);	
       });
+
+
+   const annotations = [
+      {
+	 note: {
+	    label: "Nature's capacity to absorb CO2 exceeded",
+	    lineType:"none",
+ 	    orientation:"leftRight",
+	    "align":"top"
+	 },
+	 type: d3.annotationCalloutCircle,
+	 subject: { radius: 15 },
+	 data: { x: 1974, y: -0.126 },
+	 dy: -120
+	 }
+      ]
+
+   // Add annotation to the chart
+   const makeAnnotations = d3.annotation()
+	 .accessors({
+	    x: function(d){ return x(d.x) + margin.left },
+	    y: function(d){ return y(d.y) + margin.top }
+	 })
+	 .annotations(annotations)
+    
+   d3.select("#Graph").append("g")
+      .call(makeAnnotations)
 }
 
 async function makeGlacierGraph() {
@@ -391,20 +418,7 @@ async function makeC02Graph(annotate) {
 	 .attr("transform","translate("+(margin.left)+","+(margin.top)+")")
 	 .attr("d", co2allowance);
 
-      // Features of the annotation
       const annotations = [
-	 /*{
-	    note: {
-	       label: "President Reagan's Deregulations",
-	       lineType:"none",
-	       orientation:"leftRight",
-	       "align":"middle"
-	    },
-	    type: d3.annotationCalloutCircle,
-	    subject: { radius: 15 },
-	    data: { x: 1983, y: 18484357 },
-	    dx: 40
-	 },*/
 	 {
 	    note: {
 	       label: "Nature's capacity to absorb CO2 exceeded",
