@@ -100,6 +100,7 @@ async function makeTempGraph() {
  	    orientation:"leftRight",
 	    "align":"top"
 	 },
+	 className: "co2annotate",
 	 type: d3.annotationCalloutCircle,
 	 subject: { radius: 15 },
 	 data: { x: 1974, y: -0.126 },
@@ -426,6 +427,7 @@ async function makeC02Graph(annotate) {
 	       orientation:"leftRight",
 	       "align":"top"
 	    },
+	    className: "co2annotate",
 	    type: d3.annotationCalloutCircle,
 	    subject: { radius: 15 },
 	    data: { x: 1975.3, y: 17000000 },

@@ -78,3 +78,7 @@ div.tooltip {
     width: 80vw;
     height: 70vh;
 }
+
+.co2annotate text {
+    fill: #E31212;
+}
