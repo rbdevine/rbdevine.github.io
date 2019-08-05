@@ -2,8 +2,9 @@
 <meta charset="utf-8">
 <head>
   <link rel="stylesheet" href="slideshow.css">
-  <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <!--script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.3.2/d3-annotation.min.js"></script>
   <script src="graphs.js"></script>
   <!--script src="d3.min.js"></script-->
   <!--script src="d3-annotation.js"></script-->
@@ -13,34 +14,48 @@
 </style>
 <!--body onload='init()'-->
 <body>
-    <!-- Tab links -->
-    <div class="tab">
-      <button id="Scene1" class="tablinks">1</button>
-      <button id="Scene2" class="tablinks">2</button>
-      <button id="Scene3" class="tablinks">3</button>
-      <!--button class="tablinks" onclick="openCity(event, 'London')">London</button>
-      <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-      <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button-->
-    </div>
-    <!-- Tab content -->
-<div id="Scene1Content" class="tabcontent">
-  <h3>C02 On the Rise</h3>
-  <p>C02 output into the atmosphere due to human activity has been on the rise in the past 4 decades.</p>
-  <svg id="Scene1SVG" width=500 height=400></svg>
-</div>
+  <div class="slideNav">
+    <button id="Scene1" class="scenelink">1</button>
+    <button id="Scene2" class="scenelink">2</button>
+    <button id="Scene3" class="scenelink">3</button>
+    <button id="Scene4" class="scenelink">4</button>
+    <button id="Scene5" class="scenelink">5</button>
+  </div>
 
-<div id="Scene2Content" class="tabcontent">
-  <h3>Earth's Land and Sea Temperature</h3>
-  <p>The surface temperature of the earth on both land and water, relatively stable for thousands of years, began a sharp incline with the industrial revolution.</p>
-  <svg id="Scene2SVG" width=500 height=400></svg>
-</div>
+  <!-- scene text -->
+  <div id="Scene1Content" class="scenetext">
+    <h3>C02 On the Rise</h3>
+    <p>C02 output into the atmosphere due to human activity has been on the rise in the past 4 decades. Nature currently outputs approximately 30 Gtons of CO2, but is capeable of aborbing 43 Gtons, leaving a net -13 Gtons that it can absorb of the C02 produced by human activity. When natural resources such as the 2.7 sq. miles of rainforest the Amazon basin in south America are reduced due to deforestation, the amount of C02 that can be absorbed is significantly reduced.</p>
+  </div>
 
-<div id="Scene3Content" class="tabcontent">
-  <h3>Glacier Surface Area Reduction</h3>
-  <p>The earth glaciers located at the earth's two poles have been dramatically losing surface area in the past few decades. The trend is expected to accelerate in the decades to come. </p>
-  <svg id="Scene3SVG" width=500 height=400></svg>
-</div>
-    <svg id="General" width=500 height=400>
-    </svg>
-  </body>
+  <div id="Scene2Content" class="scenetext">
+    <h3>Nature's Role in Balancing C02</h3>
+    <p>Nature currently outputs approximately 30 Gtons of CO2, but is capeable of aborbing 43 Gtons, leaving a net -13 Gtons that it can absorb of the C02 produced by human activity. When natural resources such as the 2.7 sq. miles of rainforest the Amazon basin in south America are reduced due to deforestation, the amount of C02 that can be absorbed is significantly reduced.</p>
+  </div>
+  
+  <!--div id="Scene3Content" class="scenetext">
+    <h3>C02 Density Increasing</h3>
+    <p>As more and more C02 is put into the atmosphere, its density also increases. The density accelerates the rise in the earth's surface temperature by trapping more of the warm air.</p-->
+  </div>
+  
+  <div id="Scene3Content" class="scenetext">
+    <h3>Earth's Surface Temperature Rising with CO2</h3>
+    <p>The surface temperature of the earth on both land and water, relatively stable for thousands of years, began a sharp incline as more CO2 is emitted into the atmosphere.</p>
+  </div>
+
+  <div id="Scene4Content" class="scenetext">
+    <h3>Glacier Surface Area Reduction</h3>
+    <p>The earth glaciers located at the earth's two poles have been dramatically losing surface area in the past few decades. The trend is expected to accelerate in the decades to come. </p>
+  </div>
+
+  <div id="Scene5Content" class="scenetext">
+    <h3>Sea Level Rise</h3>
+    <p>As the glaciers melt, their massive volumes are transfromed from ice to water, causing a rise in sea level. Scientist warn that each inch of sea level rise will result in catastrophic consequences for coastal cities. Island nations, such as Kerabas and the Maldives are particularly at risk.</p>
+  </div>
+
+  <div>
+    <svg id="Graph" width=500 height=400></svg>
+  </div>
+
+</body>
 </html>
